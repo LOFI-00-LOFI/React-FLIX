@@ -1,0 +1,31 @@
+  .popup-card {
+        background-color: rgb(20, 20, 20);
+
+        box-shadow:
+            rgba(0, 0, 0, 0.2) 0px 2px 1px 1px,
+            rgba(0, 0, 0, 0.14) 0px 1px 1px 0px,
+            rgba(0, 0, 0, 0.12) 0px 1px 3px 1px;
+
+        background-image: linear-gradient(
+            rgba(255, 255, 255, 0.05),
+            rgba(255, 255, 255, 0.05)
+        );
+
+        border-radius: 8px;
+        transform-origin: center;
+    }
+
+    .popup-scale-down {
+        transform: translate(-50%, -100%) scale(0.1);
+    }
+
+    .popup-scale-up {
+        transform: translate(-50%, -100%) scale(1);
+        opacity: 1;
+    }
+
+    .transition-all{
+        transition: 
+        transform 0.3s ease 0.1s,
+        opacity 0.3s ease;
+    }

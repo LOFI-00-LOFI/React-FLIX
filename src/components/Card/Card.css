@@ -1,0 +1,11 @@
+.card{
+    cursor: pointer;
+    color: white;
+    opacity: 1;
+    position: relative;
+}
+
+.card img{
+    width: 100%;
+    display: block;
+}
