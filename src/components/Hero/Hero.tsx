@@ -42,14 +42,14 @@ const Hero: React.FC = () => {
 
 
     return (
-        <main className="relative overflow-hidden">
+        <main className="relative bg-custom-dark overflow-hidden">
             {/* Video Player */}
             {trailerURL && (
 
                 <VideoPlayer
+                customHeight='0'
                     videoId={trailerURL}
                     isMuted={playerMuted}
-                    toggleMute={toggleMute}
                     />
             )}
 
@@ -66,7 +66,7 @@ const Hero: React.FC = () => {
             {/* movie details */}
             {selectedMovie && (
                 <div className="absolute top-[38%]  pl-12 w-full z-10">
-                    <h1 className="text-4xl md:text-6xl font-bold mb-4 text-white">
+                    <h1 className="text-3xl md:text-6xl font-bold mb-4 text-white">
                         {selectedMovie.title.length > 30 && window.innerWidth < 768 ? selectedMovie.title.substring(0, 30) + "..." : selectedMovie.title}
                     </h1>
 

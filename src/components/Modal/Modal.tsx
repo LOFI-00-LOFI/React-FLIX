@@ -139,7 +139,7 @@ const Modal: React.FC<ModalProps> = ({
                         </div>
 
                         <div className='pointer-events-none overflow-hidden'>
-                            <VideoPlayer videoId={videoId} isMuted={muted} />
+                            <VideoPlayer customHeight="60" videoId={videoId} isMuted={muted} />
                         </div>
                     </div>
                 ) : (

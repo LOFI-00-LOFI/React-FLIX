@@ -1,9 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react'; // Adjust the import path for icons
 import Card from '../Card/Card'; // Adjust the import path for your Card component
-import './Carousel.css';
-
-
 
 interface CarouselProps {
     title: string;
@@ -11,8 +8,6 @@ interface CarouselProps {
 }
 
 const Carousel: React.FC<CarouselProps> = ({ title, items }) => {
-
-    
     const carouselContainer = useRef<HTMLDivElement | null>(null);
     const [scrollPosition, setScrollPosition] = useState<number>(0);
     const scrollAmount: number = 320;
@@ -46,26 +41,26 @@ const Carousel: React.FC<CarouselProps> = ({ title, items }) => {
     };
 
     return (
-        <div className="carousel-wrapper">
+        <div className="relative">
             <h1 className="mt-4 mb-2 text-white text-2xl font-semibold">{title}</h1>
-            <div className="carousel-container-wrapper relative">
+            <div className="relative scrollbar-none">
                 {scrollPosition > 0 && (
-                    <button onClick={scrollLeft} className="carousel-button carousel-button-left">
+                    <button onClick={scrollLeft} className="absolute top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white border-none p-4 cursor-pointer z-10 transition-colors duration-300 ease-in-out hover:bg-opacity-80 left-0 h-full">
                         <ChevronLeft />
                     </button>
                 )}
                 {carouselContainer.current && (scrollPosition + (carouselContainer.current.clientWidth) < carouselContainer.current.scrollWidth) && (
-                    <button onClick={scrollRight} className="carousel-button carousel-button-right">
+                    <button onClick={scrollRight} className="absolute top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white border-none p-4 cursor-pointer z-10 transition-colors duration-300 ease-in-out hover:bg-opacity-80 right-0 h-full">
                         <ChevronRight />
                     </button>
                 )}
                 <div
                     ref={carouselContainer}
-                    className="carousel-container"
+                    className="overflow-x-auto flex scroll-snap-x-mandatory scrollbar-none"
                     onScroll={handleScroll}
                 >
                     {items.map((item) => (
-                        <div className="carousel-item" key={item.id}>
+                        <div className="scroll-snap-center flex-none mr-4" key={item.id}>
                             <Card item={item} />
                         </div>
                     ))}

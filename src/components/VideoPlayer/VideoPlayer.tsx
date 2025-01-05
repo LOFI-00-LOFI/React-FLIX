@@ -1,16 +1,16 @@
+import classNames from 'classnames';
 import React, { useState, useRef, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import { useLocation } from 'react-router-dom';
-import { Play, Pause, Volume2, VolumeX, Maximize, Minimize } from 'lucide-react';
 
 interface VideoPlayerProps {
   videoId: string;
   isMuted?: boolean;
-  toggleMute?: () => void;
   pip?: boolean;
+  customHeight?: string 
 }
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, isMuted, toggleMute, pip }) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, isMuted, pip,customHeight='90' }) => {
   const location = useLocation();
   const playerRef = useRef<ReactPlayer>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -26,11 +26,16 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, isMuted, toggleMute,
     setVolume(mute ? 0 : 0.8);
   }, [mute]);
 
+  const containerClass = classNames({
+    'scale-110 relative pt-[56.25%] h-[190px]': pip,
+    'h-[100vh]': location.pathname.startsWith('/watch'),
+    [`h-[${customHeight}vh] relative pt-[56.25%] scale-150`]: !pip && !location.pathname.startsWith('/watch'),
+  });
  
   return (
     <div
       ref={containerRef}
-      className={` ${pip ? 'scale-110 player-wrapper' : location.pathname.startsWith('/watch') ? 'h-[100vh]' : 'player-wrapper scale-150'}`}
+      className={containerClass}
       onContextMenu={handleContextMenu}
     >
       {/* React Player */}
@@ -43,7 +48,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, isMuted, toggleMute,
         volume={volume}
         width="100%"
         height="100%"
-        className="react-player"
+        className="absolute top-0 left-0"
         loop={true}
         config={{
       

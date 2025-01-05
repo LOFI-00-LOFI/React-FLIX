@@ -5,7 +5,6 @@ interface CardProps {
     item: Movie;
 }
 
-import './Card.css'
 import { useUtilsContext } from '../../context/UtilsContext';
 
 const Card: React.FC<CardProps> = ({ item }) => {
@@ -35,7 +34,7 @@ const Card: React.FC<CardProps> = ({ item }) => {
 
     return (
         <div
-            className="card pointer-events-auto relative sm:w-56 w-36"
+            className="cursor-pointer text-white opacity-1 pointer-events-auto relative sm:w-56 w-36"
             onMouseEnter={handleHover}
             role="presentation"
         >
@@ -43,7 +42,7 @@ const Card: React.FC<CardProps> = ({ item }) => {
             onError={(e)=>{handleNoImageError(e)}}
                 src={`https://image.tmdb.org/t/p/w300${item.backdrop_path}`}
                 alt={item.title}
-                className="w-full h-auto"
+                className="w-full block h-auto"
             />
         </div>
     );

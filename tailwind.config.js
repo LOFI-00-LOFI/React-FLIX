@@ -5,8 +5,25 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'sharp-sans': ['"Sharp Sans"', 'sans-serif'],
+      },
+      backgroundColor: {
+        'custom-dark': '#141414',
+      },
+    },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        '.scrollbar-none': {
+          'scrollbar-width': 'none',
+        },
+        '.scrollbar-hide::-webkit-scrollbar': {
+          'display': 'none',
+        },
+      });
+    },
+  ],
 }
-

@@ -27,7 +27,7 @@ const Search: React.FC = () => {
     }, [query]);
 
     return (
-        <div className="absolute top-36 flex flex-wrap left-12 gap-4">
+        <div className="absolute top-36 flex flex-wrap px-12 justify-around gap-4">
             {movies.length > 0 ? (
                 movies.map((item, index) => (
                     <Card key={index} item={item} /> // Pass the movie item to the Card component
