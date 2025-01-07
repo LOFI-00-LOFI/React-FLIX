@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import  { FC, useEffect } from 'react';
 import Card from '../components/Card/Card';
 import { useUtilsContext } from '../context/UtilsContext';
 
-const MyList: React.FC = () => {
+const MyList: FC = () => {
 
     const {movieList} = useUtilsContext()
 

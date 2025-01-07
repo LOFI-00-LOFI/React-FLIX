@@ -1,4 +1,4 @@
-import React from 'react';
+import {FC} from 'react';
 import { useCardContext } from '../../context/CardContext'; // Adjust the import path
 
 interface CardProps {
@@ -7,7 +7,8 @@ interface CardProps {
 
 import { useUtilsContext } from '../../context/UtilsContext';
 
-const Card: React.FC<CardProps> = ({ item }) => {
+const Card: FC<CardProps> = ({ item }) => {
+    
     const { setCardState, cardState } = useCardContext(); // Use context
     const {handleNoImageError} = useUtilsContext(); // Use context
 

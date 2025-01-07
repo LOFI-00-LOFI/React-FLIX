@@ -1,11 +1,11 @@
-import React from 'react'
+import { FC } from 'react'
 import { useParams } from 'react-router-dom'
 import VideoPlayer from '../components/VideoPlayer/VideoPlayer'
 
 
 
 
-const Watch: React.FC = () => {
+const Watch: FC = () => {
   const { id } = useParams()
 
   if (!id) {
@@ -14,7 +14,7 @@ const Watch: React.FC = () => {
 
   return (
     <div className='relative overflow-hidden'>
-      <VideoPlayer videoId={id} isMuted={true} toggleMute={() => { }} />
+      <VideoPlayer videoId={id} isMuted={true}  />
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import  { createContext, useContext, useState, ReactNode, FC } from 'react';
 import { useCardContext } from './CardContext';
 import fallbackImage from '../assets/404.jpg';
 
@@ -14,7 +14,7 @@ interface UtilsContextValue {
 const UtilsContext = createContext<UtilsContextValue | undefined>(undefined);
 
 // Define the provider component
-export const UtilsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const UtilsProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [movieList, setMovieList] = useState<Movie[]>(JSON.parse(localStorage.getItem('list') || '[]'));
 
     const {setCardState} = useCardContext()

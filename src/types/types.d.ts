@@ -91,6 +91,8 @@ interface MoviesWithGenre{
 
 interface Trailer {
   key:string
+  type:string
+  site:string
 }
 
 interface CardState{

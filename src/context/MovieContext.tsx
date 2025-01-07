@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import  { createContext, useContext, useState, ReactNode, FC } from 'react';
 
 interface MovieContextType {
     selectedMovie: Movie | null;
@@ -21,7 +21,7 @@ interface MovieContextType {
 
 const MovieContext = createContext<MovieContextType | undefined>(undefined);
 
-export const MovieProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const MovieProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
     const [popularMovies, setpopularMovies] = useState<Movie[] | null>(null);
     const [trendingMovies, setTrendingMovies] = useState<Movie[] | null>(null);

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Card from '../components/Card/Card';
 import { useParams } from 'react-router-dom';
 import { tmdbApi } from '../tmdbApi';
 
-const Search: React.FC = () => {
+const Search: FC = () => {
 
     const { query } = useParams<{ query: string }>();
 
@@ -12,15 +12,11 @@ const Search: React.FC = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
+
+
                 const data = await tmdbApi.searchMovies(query || '', 1);
-
-
-                setMovies(data);
-
-            } catch (error) {
-                setMovies([]);
-            }
+                setMovies(Array.isArray(data) ? data : data.results);
+           
         };
 
         fetchData();

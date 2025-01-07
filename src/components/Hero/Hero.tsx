@@ -1,5 +1,5 @@
 // Hero.tsx
-import React, { useEffect } from 'react';
+import  { FC, useEffect } from 'react';
 import { Play, Info, Volume2, VolumeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import VideoPlayer from '../VideoPlayer/VideoPlayer';
@@ -7,7 +7,8 @@ import { useMovieContext } from '../../context/MovieContext'; // Import the cont
 import { tmdbApi } from '../../tmdbApi';
 
 
-const Hero: React.FC = () => {
+const Hero: FC = () => {
+
     const {
         selectedMovie,
         setTrailerURL,
@@ -16,6 +17,7 @@ const Hero: React.FC = () => {
         setPlayerMuted,
         setIsModalOpen,
     } = useMovieContext(); // Use context
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -23,12 +25,8 @@ const Hero: React.FC = () => {
         
         const fetchTrailer = async () => {
             if (selectedMovie) {
-                try {
                     const trailer = await tmdbApi.getMovieTrailer(selectedMovie.id);
-                    setTrailerURL(trailer.key); // Assuming the trailer object has a 'key' property
-                } catch (error) {
-                    console.error("Error fetching trailer:", error);
-                }
+                    setTrailerURL(trailer.key); 
             }
         };
 

@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useState, useRef, useEffect } from 'react';
+import  { useState, useRef, useEffect, FC } from 'react';
 import ReactPlayer from 'react-player';
 import { useLocation } from 'react-router-dom';
 
@@ -10,17 +10,16 @@ interface VideoPlayerProps {
   customHeight?: string 
 }
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId, isMuted, pip,customHeight='90' }) => {
+const VideoPlayer: FC<VideoPlayerProps> = ({ videoId, isMuted, pip,customHeight='90' }) => {
   const location = useLocation();
   const playerRef = useRef<ReactPlayer>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [mute, setMute] = useState(false);
-  const [playing, setPlaying] = useState(true);
-  const [volume, setVolume] = useState(0.8);
+  const [mute] = useState<boolean>(false);
+  const [playing] = useState<boolean>(true);
+  const [volume, setVolume] = useState<number>(0.8);
 
   const handleContextMenu = (e: React.MouseEvent) => e.preventDefault();
 
-  
 
   useEffect(() => {
     setVolume(mute ? 0 : 0.8);

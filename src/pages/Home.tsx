@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useMovieContext } from '../context/MovieContext'; // Import the context
 import { tmdbApi } from '../tmdbApi';
 import Hero from '../components/Hero/Hero'; // Assuming you have a Hero component
@@ -6,7 +6,7 @@ import Carousel from '../components/Carousel/Carousel';
 
 
 
-const Home: React.FC = () => {
+const Home:FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [genresWithMovies, setgenresWithMovies] = useState<GenreWithMovies[] | null>(null);
 
@@ -24,7 +24,6 @@ const Home: React.FC = () => {
 
     useEffect(() => {
         const loadMovies = async () => {
-            try {
                 setIsLoading(true);
 
                 const [pmovies, trending, topRated, allGenres] = await Promise.all([
@@ -53,11 +52,8 @@ const Home: React.FC = () => {
                 const randomIndex = Math.floor(Math.random() * pmovies.results.length);
                 const selected = pmovies.results[randomIndex];
                 setSelectedMovie(selected);
-            } catch (error) {
-                console.error("Error fetching movies:", error);
-            } finally {
+
                 setIsLoading(false);
-            }
         };
 
         loadMovies();
@@ -73,20 +69,19 @@ const Home: React.FC = () => {
 
     return (
         <div>
-            {isLoading ? (
-                <p>Loading...</p>
-            ) : (
-                <>
-                    <Hero />
-                    <div className="absolute w-full top-[35vh] md:top-[65vh] lg:top-[85vh] pl-10 flex flex-col space-y-4">
-                        {popularMovies && <Carousel title="Popular Movies" items={popularMovies} />}
-                        {trendingMovies && <Carousel title="Trending Movies" items={trendingMovies} />}
-                        {topRatedMovies && <Carousel title="Top-Rated Movies" items={topRatedMovies} />}
-                        {genresWithMovies?.map((moviesList) => (
-                            <Carousel key={moviesList.id} title={moviesList.name} items={moviesList.movies} />
-                        ))}
-                    </div>
-                </>
+            {isLoading && <p>Loading...</p>}
+            {!isLoading && (
+            <>
+                <Hero />
+                <div className="absolute w-full top-[35vh] md:top-[65vh] lg:top-[85vh] pl-10 flex flex-col space-y-4">
+                {popularMovies && <Carousel title="Popular Movies" items={popularMovies} />}
+                {trendingMovies && <Carousel title="Trending Movies" items={trendingMovies} />}
+                {topRatedMovies && <Carousel title="Top-Rated Movies" items={topRatedMovies} />}
+                {genresWithMovies?.map((moviesList) => (
+                    <Carousel key={moviesList.id} title={moviesList.name} items={moviesList.movies} />
+                ))}
+                </div>
+            </>
             )}
         </div>
     );

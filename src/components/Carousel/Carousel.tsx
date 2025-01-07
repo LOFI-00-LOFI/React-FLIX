@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react'; // Adjust the import path for icons
 import Card from '../Card/Card'; // Adjust the import path for your Card component
 
@@ -7,7 +7,8 @@ interface CarouselProps {
     items: Movie[];
 }
 
-const Carousel: React.FC<CarouselProps> = ({ title, items }) => {
+const Carousel: FC<CarouselProps> = ({ title, items }) => {
+    
     const carouselContainer = useRef<HTMLDivElement | null>(null);
     const [scrollPosition, setScrollPosition] = useState<number>(0);
     const scrollAmount: number = 320;

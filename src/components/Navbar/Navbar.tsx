@@ -1,16 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react'
+import { FC,useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Search, Bell, ChevronRight, Menu, X } from 'lucide-react'
 import logo from '../../assets/Netflix-LOGO.png'
 import profileImage from '../../assets/profile.jpg'
 
-const Navbar: React.FC = () => {
-    const [isSticky, setIsSticky] = useState(false);
-    const [isSearchActive, setIsSearchActive] = useState(false);
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('');
-
+const Navbar: FC = () => {
     const navigate = useNavigate();
+
+    const [isSticky, setIsSticky] = useState<boolean>(false);
+    const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
+    const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+    const [searchQuery, setSearchQuery] = useState<string>('');
+
 
     const searchInputRef = useRef<HTMLInputElement>(null);
     const searchInputMobileRef = useRef<HTMLInputElement>(null);
@@ -41,7 +42,6 @@ const Navbar: React.FC = () => {
 
     const handleSearch = (event: React.KeyboardEvent) => {
         if (event.key === 'Enter' && searchQuery.trim()) {
-            // Handle search logic here
             setSearchQuery('');
             setIsSearchActive(false);
             isMenuOpen && setIsMenuOpen(false);

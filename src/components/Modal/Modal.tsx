@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import  { FC, useEffect, useState } from 'react';
 import { Play, Volume2, VolumeOff, Check, Plus, ThumbsUp } from 'lucide-react';
-// import SimilarMovieCard from './SimilarMovieCard'; // Ensure this component is imported
 import { useNavigate } from 'react-router-dom';
 import { tmdbApi } from '../../tmdbApi';
 import VideoPlayer from '../VideoPlayer/VideoPlayer';
@@ -14,33 +13,33 @@ interface ModalProps {
     videoId?: string | null;
 }
 
-const Modal: React.FC<ModalProps> = ({
+const Modal: FC<ModalProps> = ({
     isOpen,
     onClose,
     movieData,
 }) => {
+
+
     const navigate = useNavigate();
 
-
+    const { addToFavoriteList } = useUtilsContext()
 
     const [addedToFav, setaddedToFav] = useState<boolean>(false)
     const [muted, setmuted] = useState<boolean>(false)
+    const [movieDetails, setmovieDetails] = useState<MovieDetails | null>(null)
+    const [videoId, setvideoId] = useState<string>('')
+    const [similarMovies, setsimilarMovies] = useState<Movie[]>([])
+    const [loadingSimilarMovies, setloadingSimilarMovies] = useState<boolean>(false)
 
     const toggleMuteVideo = () => {
         setmuted(!muted)
     }
-
-    const { addToFavoriteList } = useUtilsContext()
-
-    const [movieDetails, setmovieDetails] = useState<MovieDetails | null>(null)
-
 
       useEffect(() => {
         let list = JSON.parse(localStorage.getItem('list') || '[]');
         setaddedToFav(list.some((m: Movie) => m.id === movieData.id));
     
         const fetchData = async () => {
-            try {
                 setloadingSimilarMovies(true);
     
                 const trailerRes = await tmdbApi.getMovieTrailer(movieData?.id);
@@ -51,11 +50,7 @@ const Modal: React.FC<ModalProps> = ({
     
                 const similarMoviesRes = await tmdbApi.getSimilarMovies(movieData?.id);
                 setsimilarMovies(similarMoviesRes.results);
-            } catch (err) {
-                seterrorLoadingSimilar(true);
-            } finally {
                 setloadingSimilarMovies(false);
-            }
         };
     
         setmuted(true);
@@ -63,10 +58,7 @@ const Modal: React.FC<ModalProps> = ({
     }, [isOpen]);
 
 
-    const [videoId, setvideoId] = useState('')
-    const [similarMovies, setsimilarMovies] = useState<Movie[]>([])
-    const [loadingSimilarMovies, setloadingSimilarMovies] = useState<boolean>(false)
-    const [errorLoadingSimilar, seterrorLoadingSimilar] = useState<boolean>(false)
+  
 
 
     if (!isOpen) return null;
@@ -153,7 +145,7 @@ const Modal: React.FC<ModalProps> = ({
                     <div className="absolute inset-0 h-[20px] bottom-0 bg-gradient-to-b from-[#141414] to-transparent"></div>
 
                     <div className='flex-col md:flex-row flex'>
-                        <div className='w-[100%] md:w-[60%]' >
+                        <div className='w-[100%] md:w-[60%] pr-8' >
                             <div className="flex items-center gap-4 mb-4">
                                 <span className="text-green-400">
                                     {movieDetails?.vote_average
@@ -189,18 +181,14 @@ const Modal: React.FC<ModalProps> = ({
 
 
 
-                    {loadingSimilarMovies ? (
+                    {loadingSimilarMovies && (
                         <p className="mt-4 text-center">Loading Similar Movies...</p>
-                    ) : errorLoadingSimilar ? (
-                        <p className="mt-4 text-center text-red-500">
-                            Error loading similar movies.
-                        </p>
-                    ) : similarMovies.length > 0 ? (
+                    )}
+                    {!loadingSimilarMovies && similarMovies.length > 0 && (
                         <div className="mt-4">
                             <h3 className="text-xl font-bold mb-4">More Like This</h3>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                                 {similarMovies.slice(0, 12).map((movie) => (
-                                  
                                     <SimilarMovieCard
                                         key={movie.id}
                                         id={movie.id.toString()}
@@ -211,7 +199,7 @@ const Modal: React.FC<ModalProps> = ({
                                 ))}
                             </div>
                         </div>
-                    ) : null}
+                    )}
                 </div>
 
             </div>

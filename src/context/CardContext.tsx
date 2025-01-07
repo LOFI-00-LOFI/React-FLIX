@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import  { createContext, useContext, useState, ReactNode, FC } from 'react';
 
 interface CardState {
     item: Movie | null; 
@@ -14,7 +14,7 @@ interface CardContextType {
 
 const CardContext = createContext<CardContextType | undefined>(undefined);
 
-export const CardProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const CardProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [cardState, setCardState] = useState<CardState>({
         item: null,
         isHovered: true,

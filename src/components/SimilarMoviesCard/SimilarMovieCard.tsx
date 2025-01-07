@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { FC, useState } from 'react';
 import { Play } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { tmdbApi } from '../../tmdbApi';
@@ -13,28 +13,31 @@ interface SimilarMovieCardProps {
   duration?: string;
 }
 
-const SimilarMovieCard: React.FC<SimilarMovieCardProps> = ({
+const SimilarMovieCard: FC<SimilarMovieCardProps> = ({
   id,
   title,
   description,
   imageUrl,
   duration = '22m',
 }) => {
-  const navigate = useNavigate();
-  const [imgSrc, setImgSrc] = useState<string>(imageUrl);
+
 
   const {setIsModalOpen} = useMovieContext()
   const {handleNoImageError} = useUtilsContext()
+
+  
+  const navigate = useNavigate();
+
+
+  const [imgSrc] = useState<string>(imageUrl);
+
 
  
 
   const handlePlayClick = async() => {
 
-     const trailerRes = await tmdbApi.getMovieTrailer(parseInt(id));
+    const trailerRes = await tmdbApi.getMovieTrailer(parseInt(id));
     navigate(`/watch/${trailerRes.key}`);
-    // Implement modal closure here
-    // For example, if using a context or a prop function
-    // closeModal();
     setIsModalOpen(false);
   };
 

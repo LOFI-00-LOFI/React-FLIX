@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
     Check,
     ChevronDown,
@@ -21,20 +21,22 @@ interface PopupCardProps {
     y: number;
 }
 
-const PopupCard: React.FC<PopupCardProps> = ({ isHovered, x, y }) => {
-    const [isPopOverHovered, setIsPopOverHovered] = useState(false);
-    const [trailerUrl, setTrailerUrl] = useState('');
-    const [imageUrl, setImageUrl] = useState('');
-    const [movieId, setMovieId] = useState<number>(0);
-    const [showTrailer, setShowTrailer] = useState(false);
-    const [title, setTitle] = useState('MOVIE');
-    const [muted, setMuted] = useState(true);
-    const [addedToFavorite, setAddedToFavorite] = useState(false);
-    const [favData, setFavData] = useState<Movie | null>(null);
+const PopupCard: FC<PopupCardProps> = ({ isHovered, x, y }) => {
 
     const { cardState, setCardState } = useCardContext(); // Use context
     const { setIsModalOpen, setSelectedMovie } = useMovieContext(); // Use context
-    const { addToFavoriteList, movieList } = useUtilsContext();
+    const { addToFavoriteList } = useUtilsContext();
+
+    const [trailerUrl, setTrailerUrl] = useState<string>('');
+    const [imageUrl, setImageUrl] = useState<string>('');
+    const [movieId, setMovieId] = useState<number>(0);
+    const [showTrailer, setShowTrailer] = useState<boolean>(false);
+    const [title, setTitle] = useState<string>('MOVIE');
+    const [muted, setMuted] = useState<boolean>(true);
+    const [addedToFavorite, setAddedToFavorite] = useState<boolean>(false);
+    const [favData, setFavData] = useState<Movie | null>(null);
+
+ 
 
     const styles = {
         popupCard: {
@@ -102,14 +104,10 @@ const PopupCard: React.FC<PopupCardProps> = ({ isHovered, x, y }) => {
         }
     }, [cardState]);
 
-    const handlePopoverMouseEnter = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        setIsPopOverHovered(true);
-    };
+ 
 
     const handlePopoverMouseLeave = (e: React.MouseEvent) => {
         e.stopPropagation();
-        setIsPopOverHovered(false);
         setCardState((prev: any) => ({
             ...prev,
             item: null,
@@ -127,125 +125,123 @@ const PopupCard: React.FC<PopupCardProps> = ({ isHovered, x, y }) => {
         <div
             className="text-white flex flex-col z-40" // Retain necessary Tailwind classes
             style={{
-                ...styles.popupCard,
-                top: `${y + 270}px`,
-                left: `${
-                    x < 200
-                        ? x + 60
-                        : window.innerWidth - x < 200
-                        ? x - 60
-                        : x
-                }px`,
-                ...(isHovered
-                    ? { ...styles.popupScaleUp }
-                    : { ...styles.popupScaleDown }),
-                ...styles.transitionAll,
+            ...styles.popupCard,
+            top: `${y + 270}px`,
+            left: `${
+                x < 200
+                ? x + 60
+                : window.innerWidth - x < 200
+                ? x - 60
+                : x
+            }px`,
+            ...(isHovered && { ...styles.popupScaleUp }),
+            ...(!isHovered && { ...styles.popupScaleDown }),
+            ...styles.transitionAll,
             }}
-            onMouseEnter={handlePopoverMouseEnter}
             onMouseLeave={handlePopoverMouseLeave}
         >
             <div
-                onMouseEnter={() => setShowTrailer(true)}
-                onMouseLeave={() => setShowTrailer(false)}
-                className="relative w-full h-[198px]"
+            onMouseEnter={() => setShowTrailer(true)}
+            onMouseLeave={() => setShowTrailer(false)}
+            className="relative w-full h-[198px]"
             >
-                <div className="flex items-center">
-                    <p className="absolute text-ellipsis z-50 top-36 left-2 font-semibold text-xl">
-                        {title.length > 25
-                            ? `${title.substring(0, 25)}...`
-                            : title}
-                    </p>
-                    <span
-                        onClick={toggleMuteAction}
-                        className="absolute cursor-pointer z-50 transition-colors duration-200 top-36 right-4 p-3 border-2 border-gray-700 rounded-full hover:border-white"
-                    >
-                        {muted ? (
-                            <VolumeOff size={20} />
-                        ) : (
-                            <Volume2 size={20} />
-                        )}
-                    </span>
-                </div>
-
-                {trailerUrl && showTrailer ? (
-                    <div className="pointer-events-none w-full h-full border-gray-700">
-                        <VideoPlayer
-                            pip={true}
-                            isMuted={muted}
-                            videoId={trailerUrl}
-                        />
-                    </div>
-                ) : imageUrl ? (
-                    <img
-                        className="w-full h-full object-cover"
-                        src={imageUrl}
-                        alt="Poster"
-                    />
+            <div className="flex items-center">
+                <p className="absolute text-ellipsis z-50 top-36 left-2 font-semibold text-xl">
+                {title.length > 25
+                    ? `${title.substring(0, 25)}...`
+                    : title}
+                </p>
+                <span
+                onClick={toggleMuteAction}
+                className="absolute cursor-pointer z-50 transition-colors duration-200 top-36 right-4 p-3 border-2 border-gray-700 rounded-full hover:border-white"
+                >
+                {muted ? (
+                    <VolumeOff size={20} />
                 ) : (
-                    <div className="w-full h-[200px] bg-gray-500 flex items-center justify-center">
-                        <span className="text-white text-sm">
-                            No Image Available
-                        </span>
-                    </div>
+                    <Volume2 size={20} />
                 )}
+                </span>
+            </div>
+
+            {trailerUrl && showTrailer ? (
+                <div className="pointer-events-none w-full h-full border-gray-700">
+                <VideoPlayer
+                    pip={true}
+                    isMuted={muted}
+                    videoId={trailerUrl}
+                />
+                </div>
+            ) : imageUrl ? (
+                <img
+                className="w-full h-full object-cover"
+                src={imageUrl}
+                alt="Poster"
+                />
+            ) : (
+                <div className="w-full h-[200px] bg-gray-500 flex items-center justify-center">
+                <span className="text-white text-sm">
+                    No Image Available
+                </span>
+                </div>
+            )}
             </div>
 
             <div className="flex justify-between items-center p-4">
-                <div className="flex space-x-2">
-                    <Link
-                        to={`/watch/${trailerUrl}`}
-                        className="rounded-full transition-colors duration-200 p-3 border-2 border-gray-700 hover:border-white"
-                    >
-                        <Play className="text-white h-6 w-6" />
-                    </Link>
-                    <button
-                        onClick={() => {
-                            addToFavoriteList(favData as Movie);
-                            setAddedToFavorite(!addedToFavorite);
-                        }}
-                        className="rounded-full transition-colors duration-200 p-3 border-2 border-gray-700 hover:border-white"
-                    >
-                        {addedToFavorite ? (
-                            <Check className="text-white h-6 w-6" />
-                        ) : (
-                            <Plus className="text-white h-6 w-6" />
-                        )}
-                    </button>
-                    <button className="rounded-full transition-colors duration-200 p-3 border-2 border-gray-700 hover:border-white">
-                        <ThumbsUp className="text-white h-6 w-6" />
-                    </button>
-                </div>
-                <button
-                    onClick={() => {
-                        setIsModalOpen(true);
-                        setSelectedMovie(favData as Movie);
-                        setCardState((prev: any) => ({
-                            ...prev,
-                            item: null,
-                            isHovered: false,
-                            cardId: null,
-                        }));
-                    }}
-                    className="rounded-full transition-colors duration-200 p-3 border-2 border-gray-700 hover:border-white"
+            <div className="flex space-x-2">
+                <Link
+                to={`/watch/${trailerUrl}`}
+                className="rounded-full transition-colors duration-200 p-3 border-2 border-gray-700 hover:border-white"
                 >
-                    <ChevronDown className="text-white h-6 w-6" />
+                <Play className="text-white h-6 w-6" />
+                </Link>
+                <button
+                onClick={() => {
+                    addToFavoriteList(favData as Movie);
+                    setAddedToFavorite(!addedToFavorite);
+                }}
+                className="rounded-full transition-colors duration-200 p-3 border-2 border-gray-700 hover:border-white"
+                >
+                {addedToFavorite ? (
+                    <Check className="text-white h-6 w-6" />
+                ) : (
+                    <Plus className="text-white h-6 w-6" />
+                )}
                 </button>
+                <button className="rounded-full transition-colors duration-200 p-3 border-2 border-gray-700 hover:border-white">
+                <ThumbsUp className="text-white h-6 w-6" />
+                </button>
+            </div>
+            <button
+                onClick={() => {
+                setIsModalOpen(true);
+                setSelectedMovie(favData as Movie);
+                setCardState((prev: any) => ({
+                    ...prev,
+                    item: null,
+                    isHovered: false,
+                    cardId: null,
+                }));
+                }}
+                className="rounded-full transition-colors duration-200 p-3 border-2 border-gray-700 hover:border-white"
+            >
+                <ChevronDown className="text-white h-6 w-6" />
+            </button>
             </div>
 
             <div className="p-4">
-                <div className="flex gap-3">
-                    <span className="text-green-400">70% Match</span>
-                    <span className="border-2 border-gray-600 rounded-sm text-sm">
-                        13+
-                    </span>
-                    <span className="font-bold">21m</span>
-                    <span className="border-2 border-gray-600 rounded-sm text-sm">
-                        HD
-                    </span>
-                </div>
-                <div className="mt-2 text-lg flex space-x-2">
-                    <span>Witty • Heartfelt • Drama</span>
-                </div>
+            <div className="flex gap-3">
+                <span className="text-green-400">70% Match</span>
+                <span className="border-2 border-gray-600 rounded-sm text-sm">
+                13+
+                </span>
+                <span className="font-bold">21m</span>
+                <span className="border-2 border-gray-600 rounded-sm text-sm">
+                HD
+                </span>
+            </div>
+            <div className="mt-2 text-lg flex space-x-2">
+                <span>Witty • Heartfelt • Drama</span>
+            </div>
             </div>
         </div>
     );
