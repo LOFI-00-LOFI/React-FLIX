@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.cdnfonts.com/css/sharp-sans');
+
+
+body{
+  @apply bg-custom-dark;
+}
+
+::-webkit-scrollbar{
+  width: 0;
+}
+
+::-webkit-scrollbar-thumb{
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
